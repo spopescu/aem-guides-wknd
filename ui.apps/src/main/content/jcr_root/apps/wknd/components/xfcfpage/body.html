@@ -41,7 +41,7 @@
 
         console.log('Populating CF data into components:', cfFields);
 
-        // Generic function to replace [[cfFields.fieldName]] markers with CF data
+        // Generic function to replace ([cfFields.fieldName]) markers with CF data
         function replaceMarkers(element) {
             // Process text nodes
             var walker = document.createTreeWalker(
@@ -61,8 +61,8 @@
                 var originalText = textNode.nodeValue;
                 var newText = originalText;
 
-                // Replace [[cfFields.fieldName]] markers
-                var regex = /\[\[cfFields\.(\w+)\]\]/g;
+                // Replace ([cfFields.fieldName]) markers
+                var regex = /\(\[cfFields\.(\w+)\]\)/g;
                 var match;
 
                 while ((match = regex.exec(originalText)) !== null) {
@@ -87,7 +87,7 @@
                     var originalValue = attr.value;
                     var newValue = originalValue;
 
-                    var regex = /\[\[cfFields\.(\w+)\]\]/g;
+                    var regex = /\(\[cfFields\.(\w+)\]\)/g;
                     var match;
 
                     while ((match = regex.exec(originalValue)) !== null) {
@@ -144,10 +144,10 @@
                 }
 
                 // Set src and alt if they have markers or are empty
-                if (!img.src || img.src.indexOf('[[cfFields.') !== -1) {
+                if (!img.src || img.src.indexOf('([cfFields.') !== -1) {
                     img.src = cfFields.primaryImage;
                 }
-                if (!img.alt || img.alt.indexOf('[[cfFields.') !== -1) {
+                if (!img.alt || img.alt.indexOf('([cfFields.') !== -1) {
                     img.alt = cfFields.adventureTitle || cfFields.title || 'Adventure Image';
                 }
             }

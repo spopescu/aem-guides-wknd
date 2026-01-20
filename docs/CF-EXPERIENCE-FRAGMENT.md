@@ -2,7 +2,7 @@
 
 ## Overview
 
-This implementation provides a dynamic Experience Fragment system that can display any Content Fragment based on a UUID selector in the URL. The system uses a generic marker replacement approach with `[[cfFields.*]]` syntax to populate component content dynamically with Content Fragment data.
+This implementation provides a dynamic Experience Fragment system that can display any Content Fragment based on a UUID selector in the URL. The system uses a generic marker replacement approach with `([cfFields.*])` syntax to populate component content dynamically with Content Fragment data.
 
 ## Architecture
 
@@ -24,7 +24,7 @@ This implementation provides a dynamic Experience Fragment system that can displ
    - Located: `ui.apps/src/main/content/jcr_root/apps/wknd/components/xfcfpage/`
 
 4. **JavaScript Marker Replacement**:
-   - Generic function that replaces `[[cfFields.*]]` markers with actual CF data
+   - Generic function that replaces `([cfFields.*])` markers with actual CF data
    - Works in text nodes and HTML attributes
    - Handles all CF fields automatically without hardcoding
    - Embedded in `body.html`
@@ -32,7 +32,7 @@ This implementation provides a dynamic Experience Fragment system that can displ
 5. **Experience Fragment**:
    - Path: `/content/experience-fragments/wknd/us/en/adventures/CFCard/master`
    - Resource Type: `wknd/components/xfcfpage`
-   - Contains components with `[[cfFields.*]]` markers
+   - Contains components with `([cfFields.*])` markers
 
 ## Usage
 
@@ -76,22 +76,22 @@ console.log(cfFields.price);         // e.g., "$3000"
 
 The system uses a generic marker replacement approach:
 
-1. **Authors add markers** in component content using `[[cfFields.fieldName]]` syntax
+1. **Authors add markers** in component content using `([cfFields.fieldName])` syntax
 2. **JavaScript scans** all text nodes and attributes in the DOM
 3. **Markers are replaced** with actual CF field values automatically
 4. **No hardcoding** needed - works with any CF field
 
 ### Marker Syntax
 
-Use `[[cfFields.fieldName]]` where `fieldName` is any Content Fragment field:
+Use `([cfFields.fieldName])` where `fieldName` is any Content Fragment field:
 
 ```
-[[cfFields.activity]]
-[[cfFields.price]]
-[[cfFields.adventureTitle]]
-[[cfFields.description]]
-[[cfFields.tripLength]]
-[[cfFields.difficulty]]
+([cfFields.activity])
+([cfFields.price])
+([cfFields.adventureTitle])
+([cfFields.description])
+([cfFields.tripLength])
+([cfFields.difficulty])
 ```
 
 ### Example Component Configurations
@@ -100,13 +100,13 @@ Use `[[cfFields.fieldName]]` where `fieldName` is any Content Fragment field:
 ```xml
 <text
     sling:resourceType="wknd/components/text"
-    text="&lt;p&gt;&lt;strong&gt;Activity:&lt;/strong&gt; [[cfFields.activity]]&lt;/p&gt;"/>
+    text="&lt;p&gt;&lt;strong&gt;Activity:&lt;/strong&gt; ([cfFields.activity])&lt;/p&gt;"/>
 ```
 
 **Title Component:**
 ```xml
 <title
-    jcr:title="[[cfFields.adventureTitle]]"
+    jcr:title="([cfFields.adventureTitle])"
     sling:resourceType="wknd/components/title"
     type="h2"/>
 ```
@@ -114,15 +114,15 @@ Use `[[cfFields.fieldName]]` where `fieldName` is any Content Fragment field:
 **Image Component:**
 ```xml
 <image
-    alt="[[cfFields.adventureTitle]]"
+    alt="([cfFields.adventureTitle])"
     sling:resourceType="wknd/components/image"/>
 ```
 
 ### Special Formatting
 
-The JavaScript automatically formats certain fields:
-- **Price**: Adds `$` prefix (e.g., `250` → `$250`)
+The JavaScript automatically handles:
 - **Images**: Automatically populates `src` from `cfFields.primaryImage`
+- **Custom formatting**: Can be added for specific fields (e.g., dates, currency)
 
 ### UUID Lookup
 
@@ -139,7 +139,7 @@ To add new CF fields to your Experience Fragment:
 
 1. **Add markers in component content**:
    ```xml
-   <text text="&lt;p&gt;New Field: [[cfFields.newFieldName]]&lt;/p&gt;"/>
+   <text text="&lt;p&gt;New Field: ([cfFields.newFieldName])&lt;/p&gt;"/>
    ```
 
 2. **No code changes needed** - the JavaScript automatically handles all fields!
@@ -149,11 +149,15 @@ To add new CF fields to your Experience Fragment:
 To add custom formatting for specific fields, edit `body.html`:
 
 ```javascript
-// In the replaceMarkers function
-if (fieldName === 'price') {
-    fieldValue = '$' + fieldValue;
-} else if (fieldName === 'date') {
-    fieldValue = formatDate(fieldValue); // Add your custom formatter
+// In the replaceMarkers function, add your custom formatting
+if (fieldValue !== undefined && fieldValue !== null) {
+    // Add custom formatting here
+    if (fieldName === 'price') {
+        fieldValue = '$' + fieldValue;
+    } else if (fieldName === 'date') {
+        fieldValue = formatDate(fieldValue);
+    }
+    newText = newText.replace(match[0], fieldValue);
 }
 ```
 
@@ -161,7 +165,7 @@ if (fieldName === 'price') {
 
 1. **Create XF** with resource type `wknd/components/xfcfpage`
 2. **Add components** (text, title, image, etc.)
-3. **Use markers** like `[[cfFields.fieldName]]` in component content
+3. **Use markers** like `([cfFields.fieldName])` in component content
 4. **Access via URL** with UUID selector
 
 ## Development
@@ -207,7 +211,7 @@ If the Content Fragment is not loading:
 
 ### Markers Not Replaced
 
-If `[[cfFields.*]]` markers are still visible:
+If `([cfFields.*])` markers are still visible:
 - **Check browser console**: Look for JavaScript errors
 - **Verify cfFields object**: Run `console.log(cfFields)` in browser console
 - **Check root container**: The JavaScript logs which container it's using
@@ -270,8 +274,8 @@ public String getFieldsAsJson() {
 The JavaScript uses regex to find and replace markers:
 
 ```javascript
-var regex = /\[\[cfFields\.(\w+)\]\]/g;
-// Matches: [[cfFields.fieldName]]
+var regex = /\(\[cfFields\.(\w+)\]\)/g;
+// Matches: ([cfFields.fieldName])
 // Captures: fieldName
 ```
 
@@ -279,7 +283,7 @@ var regex = /\[\[cfFields\.(\w+)\]\]/g;
 1. Walks through all text nodes using `TreeWalker`
 2. Scans all element attributes
 3. Replaces markers with CF field values
-4. Applies special formatting (e.g., price → $price)
+4. Can apply custom formatting for specific fields
 
 ## Files Modified/Created
 
@@ -297,15 +301,15 @@ var regex = /\[\[cfFields\.(\w+)\]\]/g;
 ### UI Content (Experience Fragment)
 - `ui.content.sample/src/main/content/jcr_root/content/experience-fragments/wknd/us/en/adventures/CFCard/.content.xml` (new)
 - `ui.content.sample/src/main/content/jcr_root/content/experience-fragments/wknd/us/en/adventures/CFCard/master/.content.xml` (new)
-  - Contains components with `[[cfFields.*]]` markers
+  - Contains components with `([cfFields.*])` markers
 
 ## Key Features
 
 ✅ **Generic Marker System** - Works with any CF field without code changes
 ✅ **UUID-based Lookup** - Efficient direct lookup using JCR API
 ✅ **Jackson Serialization** - Robust JSON handling
-✅ **Automatic Formatting** - Special handling for price, images, etc.
+✅ **Simple Marker Syntax** - `([cfFields.fieldName])` is clean and readable
 ✅ **Flexible Container Detection** - Works with various DOM structures
-✅ **JCR-safe Markers** - `[[...]]` syntax avoids validation issues
 ✅ **No Hardcoding** - Add new fields by just using markers
+✅ **Extensible Formatting** - Easy to add custom formatting for specific fields
 

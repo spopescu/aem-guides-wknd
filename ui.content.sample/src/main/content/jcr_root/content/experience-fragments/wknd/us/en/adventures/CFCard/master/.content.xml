@@ -27,8 +27,8 @@
                 <image
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="wknd/components/image"
-                        alt="\[[cfFields.title]]"
-                        isDecorative="true">
+                        alt="([cfFields.title])"
+                        isDecorative="false">
                     <cq:responsive jcr:primaryType="nt:unstructured">
                         <default
                                 jcr:primaryType="nt:unstructured"
@@ -37,7 +37,7 @@
                 </image>
                 <title
                         jcr:primaryType="nt:unstructured"
-                        jcr:title="\[[cfFields.title]]"
+                        jcr:title="([cfFields.title])"
                         sling:resourceType="wknd/components/title"
                         type="h2">
                     <cq:responsive jcr:primaryType="nt:unstructured">
@@ -49,7 +49,7 @@
                 <activity
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="wknd/components/text"
-                        text="&lt;p&gt;&lt;strong&gt;Activity:&lt;/strong&gt; [[cfFields.activity]]&lt;/p&gt;"
+                        text="&lt;p&gt;&lt;strong&gt;Activity:&lt;/strong&gt; ([cfFields.activity])&lt;/p&gt;"
                         textIsRich="true">
                     <cq:responsive jcr:primaryType="nt:unstructured">
                         <default
@@ -60,7 +60,7 @@
                 <price
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="wknd/components/text"
-                        text="&lt;p&gt;&lt;strong&gt;Price:&lt;/strong&gt; $[[cfFields.price]]&lt;/p&gt;"
+                        text="&lt;p&gt;&lt;strong&gt;Price:&lt;/strong&gt; ([cfFields.price])&lt;/p&gt;"
                         textIsRich="true">
                     <cq:responsive jcr:primaryType="nt:unstructured">
                         <default
@@ -71,7 +71,7 @@
                 <description
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="wknd/components/text"
-                        text="&lt;p&gt;[[cfFields.description]]&lt;/p&gt;"
+                        text="&lt;p&gt;([cfFields.description])&lt;/p&gt;"
                         textIsRich="true">
                     <cq:responsive jcr:primaryType="nt:unstructured">
                         <default
