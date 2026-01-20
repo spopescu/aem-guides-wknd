@@ -1,0 +1,160 @@
+<!--/*
+    Copyright 2024 Adobe
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/-->
+<sly data-sly-use.cfModel="com.adobe.aem.guides.wknd.core.models.ContentFragmentFields"></sly>
+<script>
+    var cfFields = ${cfModel.fieldsAsJson @ context='unsafe'};
+</script>
+
+<!-- Include the root container with editable WKND components -->
+<sly data-sly-resource="${'root' @ resourceType='wknd/components/container'}"></sly>
+
+<!-- Populate CF data into components -->
+<script>
+(function() {
+    'use strict';
+
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', populateCFData);
+    } else {
+        populateCFData();
+    }
+
+    function populateCFData() {
+        if (typeof cfFields === 'undefined' || !cfFields) {
+            console.log('No CF data available');
+            return;
+        }
+
+        console.log('Populating CF data into components:', cfFields);
+
+        // Generic function to replace [[cfFields.fieldName]] markers with CF data
+        function replaceMarkers(element) {
+            // Process text nodes
+            var walker = document.createTreeWalker(
+                element,
+                NodeFilter.SHOW_TEXT,
+                null,
+                false
+            );
+
+            var textNodes = [];
+            var node;
+            while (node = walker.nextNode()) {
+                textNodes.push(node);
+            }
+
+            textNodes.forEach(function(textNode) {
+                var originalText = textNode.nodeValue;
+                var newText = originalText;
+
+                // Replace [[cfFields.fieldName]] markers
+                var regex = /\[\[cfFields\.(\w+)\]\]/g;
+                var match;
+
+                while ((match = regex.exec(originalText)) !== null) {
+                    var fieldName = match[1];
+                    var fieldValue = cfFields[fieldName];
+
+                    if (fieldValue !== undefined && fieldValue !== null) {
+                        newText = newText.replace(match[0], fieldValue);
+                    }
+                }
+
+                if (newText !== originalText) {
+                    textNode.nodeValue = newText;
+                }
+            });
+
+            // Process attributes (src, alt, href, etc.)
+            if (element.hasAttributes()) {
+                var attrs = element.attributes;
+                for (var i = 0; i < attrs.length; i++) {
+                    var attr = attrs[i];
+                    var originalValue = attr.value;
+                    var newValue = originalValue;
+
+                    var regex = /\[\[cfFields\.(\w+)\]\]/g;
+                    var match;
+
+                    while ((match = regex.exec(originalValue)) !== null) {
+                        var fieldName = match[1];
+                        var fieldValue = cfFields[fieldName];
+
+                        if (fieldValue !== undefined && fieldValue !== null) {
+                            newValue = newValue.replace(match[0], fieldValue);
+                        }
+                    }
+
+                    if (newValue !== originalValue) {
+                        element.setAttribute(attr.name, newValue);
+                    }
+                }
+            }
+        }
+
+        // Find the root container - try multiple selectors
+        var rootContainer = document.querySelector('.root.responsivegrid') ||
+                           document.querySelector('.root') ||
+                           document.querySelector('[class*="responsivegrid"]') ||
+                           document.querySelector('main') ||
+                           document.body;
+
+        if (!rootContainer) {
+            console.warn('Root container not found, using document.body');
+            rootContainer = document.body;
+        }
+
+        console.log('Using root container:', rootContainer.className || rootContainer.tagName);
+
+        // Process all elements in the root container
+        var allElements = rootContainer.querySelectorAll('*');
+        allElements.forEach(function(element) {
+            replaceMarkers(element);
+        });
+
+        // Also process the root container itself
+        replaceMarkers(rootContainer);
+
+        // Special handling for images - create img tag if needed
+        var imageComponents = rootContainer.querySelectorAll('.image, .cmp-image');
+        imageComponents.forEach(function(imageComponent) {
+            if (cfFields.primaryImage) {
+                var img = imageComponent.querySelector('img');
+                if (!img) {
+                    // Create image if it doesn't exist
+                    img = document.createElement('img');
+                    img.className = 'cmp-image__image';
+                    img.style.width = '100%';
+                    img.style.height = 'auto';
+                    imageComponent.appendChild(img);
+                }
+
+                // Set src and alt if they have markers or are empty
+                if (!img.src || img.src.indexOf('[[cfFields.') !== -1) {
+                    img.src = cfFields.primaryImage;
+                }
+                if (!img.alt || img.alt.indexOf('[[cfFields.') !== -1) {
+                    img.alt = cfFields.adventureTitle || cfFields.title || 'Adventure Image';
+                }
+            }
+        });
+
+        console.log('CF data population complete');
+    }
+})();
+</script>
+

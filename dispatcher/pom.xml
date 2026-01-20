@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.adobe.aem.guides</groupId>
     <artifactId>aem-guides-wknd</artifactId>
-    <version>4.0.5-SNAPSHOT</version>
+    <version>4.1.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -15,7 +15,7 @@
   <packaging>pom</packaging>
   <name>WKND Sites Project - Dispatcher</name>
   <description>HTTP &amp; Dispatcher configurations for WKND Sites Project</description>
-  
+
 
     <build>
         <plugins>

@@ -19,7 +19,7 @@
     <groupId>com.adobe.aem.guides</groupId>
     <artifactId>aem-guides-wknd</artifactId>
     <packaging>pom</packaging>
-    <version>4.0.5-SNAPSHOT</version>
+    <version>4.1.1-SNAPSHOT</version>
      <name>WKND Sites Project - Reactor Project</name>
     <description>WKND Sites Project</description>
     <url>https://github.com/adobe/aem-guides-wknd</url>
@@ -154,7 +154,7 @@
                                 <requireJavaVersion>
                                     <version>[21,22)</version>
                                     <message>Maven must be executed with Java 21.</message>
-                                </requireJavaVersion>                                
+                                </requireJavaVersion>
                             </rules>
                         </configuration>
                     </execution>
@@ -172,7 +172,7 @@
                             </rules>
                             <fail>true</fail>
                         </configuration>
-        </execution>                    
+        </execution>
                 </executions>
             </plugin>
             <!-- Maven Compiler Plugin -->

@@ -1,0 +1,58 @@
+/**
+ * Styles for CF-powered Experience Fragment components
+ */
+
+/* CF Data Components Container */
+.xf-web-container .root {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Primary Image Styling */
+[data-cf-field="primaryImage"] {
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-cf-field="primaryImage"] img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Activity and Price Row */
+[data-cf-field="activity"],
+[data-cf-field="price"] {
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+[data-cf-field="activity"] p,
+[data-cf-field="price"] p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.cf-activity,
+.cf-price {
+    color: #eb1000;
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .xf-web-container .root {
+        padding: 1rem;
+    }
+    
+    [data-cf-field="activity"],
+    [data-cf-field="price"] {
+        width: 100% !important;
+    }
+}
+
