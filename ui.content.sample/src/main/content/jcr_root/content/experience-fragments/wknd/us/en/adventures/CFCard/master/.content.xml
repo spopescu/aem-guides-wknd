@@ -27,6 +27,7 @@
                 <image
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="wknd/components/image"
+                        fileReference="([cfFields.primaryImage])"
                         alt="([cfFields.title])"
                         isDecorative="false">
                     <cq:responsive jcr:primaryType="nt:unstructured">
