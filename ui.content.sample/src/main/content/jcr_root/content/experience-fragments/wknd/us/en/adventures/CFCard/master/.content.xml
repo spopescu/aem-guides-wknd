@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:lastModified="{Date}2024-01-19T10:00:00.000-08:00"
+        cq:lastModifiedBy="admin"
+        cq:tags="[]"
+        cq:template="/conf/wknd/settings/wcm/templates/experience-fragment-web-variation-template"
+        cq:xfMasterVariation="{Boolean}true"
+        cq:xfVariantType="web"
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Master"
+        sling:resourceType="wknd/components/xfcfpage">
+        <root
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="wknd/components/container"
+            layout="responsiveGrid">
+            <container
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="wknd/components/container"
+                layout="responsiveGrid">
+                <cq:responsive jcr:primaryType="nt:unstructured">
+                    <default
+                        jcr:primaryType="nt:unstructured"
+                        width="12"/>
+                </cq:responsive>
+                <image
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="wknd/components/image"
+                        fileReference="([cfFields.primaryImage])"
+                        alt="([cfFields.title])"
+                        isDecorative="false">
+                    <cq:responsive jcr:primaryType="nt:unstructured">
+                        <default
+                                jcr:primaryType="nt:unstructured"
+                                width="12"/>
+                    </cq:responsive>
+                </image>
+                <title
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="([cfFields.title])"
+                        sling:resourceType="wknd/components/title"
+                        type="h2">
+                    <cq:responsive jcr:primaryType="nt:unstructured">
+                        <default
+                                jcr:primaryType="nt:unstructured"
+                                width="12"/>
+                    </cq:responsive>
+                </title>
+                <activity
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="wknd/components/text"
+                        text="&lt;p&gt;&lt;strong&gt;Activity:&lt;/strong&gt; ([cfFields.activity])&lt;/p&gt;"
+                        textIsRich="true">
+                    <cq:responsive jcr:primaryType="nt:unstructured">
+                        <default
+                                jcr:primaryType="nt:unstructured"
+                                width="6"/>
+                    </cq:responsive>
+                </activity>
+                <price
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="wknd/components/text"
+                        text="&lt;p&gt;&lt;strong&gt;Price:&lt;/strong&gt; ([cfFields.price])&lt;/p&gt;"
+                        textIsRich="true">
+                    <cq:responsive jcr:primaryType="nt:unstructured">
+                        <default
+                                jcr:primaryType="nt:unstructured"
+                                width="6"/>
+                    </cq:responsive>
+                </price>
+                <description
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="wknd/components/text"
+                        text="&lt;p&gt;([cfFields.description])&lt;/p&gt;"
+                        textIsRich="true">
+                    <cq:responsive jcr:primaryType="nt:unstructured">
+                        <default
+                                jcr:primaryType="nt:unstructured"
+                                width="12"/>
+                    </cq:responsive>
+                </description>
+            </container>
+        </root>
+    </jcr:content>
+</jcr:root>
+

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:granite="http://www.adobe.com/jcr/granite/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="Dynamic XF Carousel"
+    sling:resourceType="cq/gui/components/authoring/dialog"
+    extraClientlibs="[core.wcm.components.carousel.v1.editor]"
+    helpPath="en/docs/DYNAMIC-XF-CAROUSEL.html"
+    trackingFeature="core-components:carousel:v1">
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            <tabs
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/tabs"
+                maximized="{Boolean}true">
+                <items jcr:primaryType="nt:unstructured">
+                    <properties
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Properties"
+                        sling:resourceType="granite/ui/components/coral/foundation/container"
+                        margin="{Boolean}true">
+                        <items jcr:primaryType="nt:unstructured">
+                            <columns
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns"
+                                margin="{Boolean}true">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <column
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <previewNotice
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/alert"
+                                                size="S"
+                                                text="&lt;strong&gt;Preview Only:&lt;/strong&gt; The Experience Fragments selected below are for author preview purposes only. On the publish side, the carousel content will be dynamically populated and may not contain the XFs selected here."
+                                                variant="info"/>
+                                            <xfPaths
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+                                                composite="{Boolean}true"
+                                                fieldDescription="Select Experience Fragments to preview in author mode. These are for preview only - actual publish content will be dynamic."
+                                                fieldLabel="Preview Experience Fragments">
+                                                <field
+                                                    jcr:primaryType="nt:unstructured"
+                                                    sling:resourceType="granite/ui/components/coral/foundation/container"
+                                                    name="./xfPaths">
+                                                    <items jcr:primaryType="nt:unstructured">
+                                                        <xfPath
+                                                            jcr:primaryType="nt:unstructured"
+                                                            sling:resourceType="cq/gui/components/coral/common/form/pagefield"
+                                                            fieldDescription="Select an Experience Fragment"
+                                                            fieldLabel="Experience Fragment"
+                                                            name="./xfPath"
+                                                            rootPath="/content/experience-fragments"
+                                                            filter="hierarchy"/>
+                                                    </items>
+                                                </field>
+                                            </xfPaths>
+                                            <autoplay
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                fieldDescription="Automatically cycle through slides"
+                                                name="./autoplay"
+                                                text="Autoplay"
+                                                uncheckedValue="false"
+                                                value="true"/>
+                                            <delay
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
+                                                fieldDescription="Delay (in milliseconds) between automatic slide transitions"
+                                                fieldLabel="Autoplay Delay"
+                                                min="1000"
+                                                name="./delay"
+                                                step="1000"
+                                                value="5000"/>
+                                        </items>
+                                    </column>
+                                </items>
+                            </columns>
+                        </items>
+                    </properties>
+                </items>
+            </tabs>
+        </items>
+    </content>
+</jcr:root>
+
